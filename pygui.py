@@ -1,8 +1,10 @@
 from tkinter import *
 from tkinter import messagebox
+from tkinter import ttk
 app=Tk()
 app.title('First Fit Management scheme')
-app.geometry('800x400')
+app.geometry('650x600')
+table=ttk.Treeview(app)
 #app.configure(bg="#141414")
 
 def submitValue():
@@ -17,7 +19,26 @@ def submitValue():
     blockSizeDE = [int(item) for item in item1.split()]
     processSizeDE= [int(item) for item in item2.split()]
 
-    clear()
+    treeview(blockSizeDE)
+
+def treeview(blockSizedDE):
+    
+    table['columns']=('Process Allocated','Blocks Declared')
+    table.grid(row=5,column=1)
+
+    table.column("#0",width=0,stretch=NO)
+    table.column("Process Allocated",anchor=CENTER,width=120)
+    table.column("Blocks Declared",anchor=CENTER,width=120)
+
+    table.heading("#0",text='',anchor=W)
+    table.heading("Process Allocated",text="Process Allocated",anchor=CENTER)
+    table.heading("Blocks Declared",text="Blocks Declared",anchor=CENTER)
+
+    count=0
+    for record in blockSizedDE:
+        table.insert(parent='',index='end',text='',values=(blockSizedDE[count]))
+        count +=1
+    #
 
 def allot():
     print('alot')
@@ -51,5 +72,6 @@ clearButton=Button(app,text="Clear",width=12,command=clear)
 clearButton.grid(row=4,column=1)
 goButton=Button(app,text='GO',width=12,command=allot)
 goButton.grid(row=4,column=2)
+
 
 app.mainloop()
