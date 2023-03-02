@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
 app=Tk()
+
 app.title('First Fit Management scheme')
 app.geometry('650x600')
 table=ttk.Treeview(app)
@@ -19,9 +20,10 @@ def submitValue():
     blockSizeDE = [int(item) for item in item1.split()]
     processSizeDE= [int(item) for item in item2.split()]
 
-    treeview(blockSizeDE)
+    treeview(blockSizeDE,numBlockDE)
+    #return numBlockDE,blockSizeDE,processSizeDE
 
-def treeview(blockSizedDE):
+def treeview(blockSizedDE,numberBlockDE):
     
     table['columns']=('Process Allocated','Blocks Declared')
     table.place(x=200,y=300)
@@ -35,10 +37,12 @@ def treeview(blockSizedDE):
     table.heading("Blocks Declared",text="Blocks Declared",anchor=CENTER)
 
     count=0
-    for record in blockSizedDE:
+    for record in range(numberBlockDE):
         table.insert(parent='',index='end',text='',values=(blockSizedDE[count]))
+        if count==numberBlockDE:
+            break
         count +=1
-
+        
 def allot():
     print('alott')
 
@@ -48,7 +52,22 @@ def clear():
     processEntry.delete(0,END)
     for record in table.get_children():
         table.delete(record)
-    
+
+def on_enter(e):
+    submitButton['background']='#f86263'
+    submitButton['foreground']='#141414'
+    clearButton['background']='#f86263'
+    clearButton['foreground']='#141414'
+    goButton['background']='#f86263'
+    goButton['foreground']='#141414'
+
+def on_leave(e):
+    submitButton['background']='#141414'
+    submitButton['foreground']='#f86263'
+    clearButton['background']='#141414'
+    clearButton['foreground']='#f86263'
+    goButton['background']='#141414'
+    goButton['foreground']='#f86263'
 
 numBlock=StringVar()
 numBlockLabel=Label(app,text='Number of blocks: ',bg='#141414',fg='#FFFFFF',font=('bold',12),pady=20,padx=10)
@@ -68,12 +87,18 @@ processLabel.grid(row=2,column=0,sticky=W)
 processEntry=Entry(app,width=60,textvariable=processSize)
 processEntry.grid(row=2,column=1)
 
-submitButton=Button(app,text="Submit",width=14,height=2,command=submitValue)
+submitButton=Button(app,text="Submit",width=14,height=2,border=0,fg='#f86263',bg='#141414',activeforeground='#141414',activebackground='#f86263',command=submitValue)
 submitButton.grid(row=4,column=0)
-clearButton=Button(app,text="Clear",width=14,height=2,command=clear)
+submitButton.bind("<Enter>",on_enter)
+submitButton.bind("<Leave>",on_leave)
+clearButton=Button(app,text="Clear",width=14,height=2,border=0,fg='#f86263',bg='#141414',activeforeground='#141414',activebackground='#f86263',command=clear)
 clearButton.grid(row=4,column=1)
-goButton=Button(app,text='GO',width=14,height=2,command=allot)
+clearButton.bind("<Enter>",on_enter)
+clearButton.bind("<Leave>",on_leave)
+goButton=Button(app,text='GO',width=14,height=2,border=0,fg='#f86263',bg='#141414',activeforeground='#141414',activebackground='#f86263',command=allot)
 goButton.grid(row=4,column=2)
+goButton.bind("<Enter>",on_enter)
+goButton.bind("<Leave>",on_leave)
 
 
 app.mainloop()
